@@ -1,5 +1,9 @@
-FROM javastreets/mule:latest
+FROM ubantu:16.04
 
-COPY helloworld-1.0.0-SNAPSHOT-mule-application.jar /opt/mule/apps/
+RUN apt-get update && apt-get install -y python python-pip
 
-CMD [ "/opt/mule/bin/mule"]
+RUN pip install flask
+
+COPY app.py /opt/
+
+ENTRYPOINT FLASK_APP=/opt/app.py flask run --host=0.0.0.0 --port=8080
