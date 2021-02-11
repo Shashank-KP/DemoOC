@@ -1,13 +1,9 @@
-from alpine:latest
-RUN apk add --no-cache py3-pip \
-    && pip3 install --upgrade pip
+FROM ubuntu:16.04
 
-WORKDIR /app
-COPY . /app
+RUN apt-get update && apt-get install -y python python-pip
 
-RUN pip3 --no-cache-dir install -r requirements.txt
+RUN pip install flask
 
-EXPOSE 5000
+COPY app.py /opt/
 
-ENTRYPOINT ["python3"]
-CMD ["helloworld.py"]
+ENTRYPOINT FLASK_APP=/opt/app.py flask run --host=0.0.0.0 --port=8080
